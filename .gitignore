@@ -1,3 +1,8 @@
 *.docx
 *.pdf
 *.exe
+.terraform/
+*.tfstate
+*.tfstate.backup
+.crash
+*.lock.hcl
