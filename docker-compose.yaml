@@ -19,21 +19,3 @@ services:
       dockerfile: Dockerfile
     env_file:
      - ./versatiL/.env
-    depends_on:
-     - versatil-database
-
-
-  versatil-database:
-    image: mysql:8.0
-    container_name: versatil-database
-    restart: unless-stopped
-    environment:
-      - MYSQL_ROOT_PASSWORD=
-      - MYSQL_ALLOW_EMPTY_PASSWORD=true
-      - MYSQL_DATABASE=versatiL_database
-    volumes:
-      - versatil_db_data:/var/lib/mysql
-
-
-volumes:
- versatil_db_data:
