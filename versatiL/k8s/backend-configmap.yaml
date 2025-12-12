@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myconfig
+  namespace: versatil-app
+data:
+  JWT_EXPIRATION_TIME: "3600s"

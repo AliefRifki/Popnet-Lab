@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: versatil-backend-deployment
+  namespace: versatil-app
+  labels:
+    app: versatil-backend
+spec:
+  selector:
+    matchLabels:
+      app: versatil-backend
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: versatil-backend
+    spec:
+      containers:
+        - name: versatil-backend
+          image: 2702251144acr.azurecr.io/versatil-backend:latest
+          livenessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+            periodSeconds: 10
+          env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: DATABASE_HOST
+
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: DATABASE_PORT
+
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: DATABASE_USER
+
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: DATABASE_PASSWORD
+
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: DATABASE_NAME
+
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: JWT_SECRET
+
+          ports:
+            - containerPort: 8080
+              name: backend-port

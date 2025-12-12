@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: versatil-app
+  labels:
+    app: versatil-frontend
+spec:
+  selector:
+    matchLabels:
+      app: versatil-frontend
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: versatil-frontend
+    spec:
+      containers:
+        - name: versatil-frontend
+          image: 2702251144acr.azurecr.io/versatil-frontend:latest
+          livenessProbe:
+            tcpSocket:
+              port: 80
+            initialDelaySeconds: 5
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            timeoutSeconds: 2
+            successThreshold: 1
+            failureThreshold: 3
+            periodSeconds: 10
+          ports:
+            - containerPort: 80
+              name: http

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: versatil-app
+spec:
+  selector:
+    app: versatil-backend
+  type: ClusterIP
+  ports:
+    - name: backend-port
+      protocol: TCP
+      port: 8080
+      targetPort: 8080

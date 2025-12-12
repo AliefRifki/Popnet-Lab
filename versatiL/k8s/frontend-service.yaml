@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: versatil-frontend
+  namespace: versatil-app
+spec:
+  selector:
+    app: versatil-frontend
+  type: LoadBalancer
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
